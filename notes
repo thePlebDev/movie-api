@@ -1,0 +1,57 @@
+REACT FORMS
+
+- the amount of times I have types this and not actually created anything, amazes me
+- so from the data I wan the:
+1)it currently gives us an array of objects that we are going to have to loop over and grab what we want
+form each object we want:
+2)display_title, headline,link,multimedia.src,
+- so then we want to put these all in the state for each individual and then loop over them to create the react component
+- so first we need to get them into the state. maybe we wan to use the map method. ok no we will only use the map method
+for when we want to render out the state. right now forRach element in the response we want to set the state. so read
+everything on how Hooks work.
+- updating a state varible will always replace it instead of merging it. the spreading ensures that we don't loose any
+code.
+- so the initial value of useState is ignored after the first render. the first time React renders a function component, it
+creates an object to live alognside it. using that object, React can keep track of various bits of metadata that
+belong to a component
+- so I can already see that my problem was that I was calling the hook inside of a loop and not top side
+
+  Writting Custom Hooks:
+  - when we want to share logic between two javascript functions, we extract it to a third function.
+  - a custom hooks is a Javascript functions whoses name starts with "use" and that may call other Hooks
+  - when react calls useState multiple times(say two) those two entries are put in the array of hooks on the first render
+  - the next time it renders those same 3 hooks are called in the same order, so React can look into
+  its array and say oj I already have a useState hook in position 0, so instead of creating a new state, I'll return the
+  existing one.
+  -so when react Creates a component, before it creates a function, it creates the metatdata object, and the empty array
+  of hooks.The first hook that runs will consime position 0
+  - React then calls your component(whihc means it knows which metadata object to store the hooks in )
+  - you call useState. React creates a new piece of state, puts it in position 0 of the hooks array and returns
+  the tuple
+  - so when react rerenders again it sets the index of the metadata object back to 0 and then calls the component.
+  - we might have to use useEffecthook. ya so I think my solution is to move the data varible up to a outer function and then
+  have the useEffecthook to listen to change on that varible and then call set info on that.
+
+  USEEFFECT:
+  - the function passed to useEffect will run after the render is committed to the screen.
+  - by defualt effects runafter ever completed render
+  -so our use effect will run after the completed render, but we can put a conditiional rendering on it
+  -our call to setState will enque a rerender of the component.
+  - I am now gettting an ifinite loop on useEffect.
+
+  -use effect is executed eachtime the component is rendered. this means that if you modify the components state inside
+  useEffect, it will cause a re-render of the component again and again
+  - I still think what is holding me back is my lack of understanding of hooks and how to use them
+
+  FETCHING DATA WITH USEEFFECT:
+  -so our data fetching function will go like this. when onClick is triggerd it will convert the on state varible loading and
+  set it to true, the useEffect hook will see that as a change and then run its data fetch, then it will make the async call
+  -we will use an async/await function for the api call 
+
+
+- so I think we want a forEach method to loop through it all
+response.forEach(element=>{
+  const {display_title, headline,link,multimedia.src} = element
+  setState(state =>({...state,{title:display_title, headline,link,media:multimedia.src}} ))
+
+})
