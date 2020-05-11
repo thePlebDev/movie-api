@@ -1,32 +1,21 @@
-import React,{ useState,useEffect } from 'react';
-import axios from 'axios'
+import React,{ useState } from 'react';
+
+
+import useMovieReviewApi from '../Utils/formhook'
+import Book from '../Books/book'
 
 const Form = ()=>{
-  const [state,setState]= useState('')
-  const [info,setInfo] = useState({})
-  const [loading,setLoading]= useState(false)
-   //hide before using
-  let data; // ask someone about this, because I can't use a hook inside a promise, because its a conditiional.
+  const [state,setState]= useState() // getting updated on every form change
+  
+  const [{info, isLoading,isError}, doFetch] = useMovieReviewApi();
 
+
+  // data.push({title:display_title,headline,link:link.url})
   const handleSubmit=(e)=>{
-
     e.preventDefault()
-    axios.get(`https://api.nytimes.com/svc/movies/v2/reviews/search.json?query=${state}&api-key=${key}`)
-      .then(response=>{
-        data=[]
-        const responseObj = response.data.results
-        responseObj.forEach(element =>{
-          const {display_title, headline,link}  = element
-          data.push({title:display_title,headline,link:link.url})
-        })
-        console.log(data)
-
-      })
-      .catch(error=>{
-        console.log(error)
-      })
-
+     doFetch(`https://api.nytimes.com/svc/movies/v2/reviews/search.json?query=${state}&api-key=${key}`)
       }
+
 
 
 
@@ -34,13 +23,24 @@ const Form = ()=>{
         setState(event.target.value)
 
       }
+
       return(
         <div>
             <form onSubmit={handleSubmit}>
             <input type= 'text' value={state} onChange={handleChange}></input>
             <button type="submit">Search</button>
             </form>
-            {loading? <h2>data is here</h2>:<h2>loading</h2>}
+            {isError && <div>Something went wrong. Please try again</div>}
+            {isLoading? (
+              <div>Loading...
+
+              </div>
+
+            ):(
+                <div><Book data={info}/></div>
+            )
+            }
+
         </div>
       )
 

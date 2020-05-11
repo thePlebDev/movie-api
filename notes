@@ -46,7 +46,56 @@ belong to a component
   FETCHING DATA WITH USEEFFECT:
   -so our data fetching function will go like this. when onClick is triggerd it will convert the on state varible loading and
   set it to true, the useEffect hook will see that as a change and then run its data fetch, then it will make the async call
-  -we will use an async/await function for the api call 
+  -we will use an async/await function for the api call
+  -so I definetly need to read up on async and await syntax.
+
+  -await is a new operator used to wait for a promise to resolve or reject. it can only be used inside an async function
+  - for error handling we can use the try catch statments. this would be syncronous error handling. however this
+  doesnt work when a promise is rejected, but alos when there is an actual runtime or syntax error happening.
+  - the async function returns a promise and then that promise must be consumed with a .then() method
+  -.then() chaining is used for when you need to make another anyc request
+  - so when we put the await keyword in front of something, the code will stop execution and wait until that line is finished
+  - when error handling, we should use the .then and the .catch() methods
+  - we should define our async function and then call it with a .then() and .catch() methods
+  - onChange we are chaging one varible, in our aplicaiton that is called state, so when the user updates the form the setState
+  is called and the state gets updated
+
+  -so in order for out useEffect to be called when the form is submitted, we need two set states. The one being a value
+  that is valled each time the form is updated, to gives us the value we want to search. The second Hook is the most
+  important, it is what we put in the dependency array of useEffect to decide if the function should be called or not.
+  - when our form is submitted we will call the hook called search and set it using the value of state.
+  that way the useEffect hook will run when the form is submitted and it will get the value of the form.
+  -we will use the loading a loading hook to indicated a loading flag that will be rendered in our app component
+
+  ERROR HANDLING WITH REACT HOOKS:
+  - errors can just be though of another state initialized with a state hook. Once there is an error statem the app component
+  can fender feedback accordingly
+  - when using async/awaut, it is common to use try/catch block for error handling. You can do this within in effect
+  -A catch-block contains statement tha specify what to do if an exception is thrown int he try-block. if any statement
+  within the try-block(or in a function called from within the try-block) throws an exception, control is immediately
+  shifted to the catch-block. if no exception is thrown in the try-block, the catch is skipped
+  - so it seems that the try block will always run but the catch block will only run if there is an exception thrown
+  - in order to make sure that we can get rid of the erorr messages. we need to call the error hook twice. once when
+  we run the useEffect method(setErorrs(false)), and when there is actually an error(setErorrs= true). the first call
+  to that hook is to make sure that the error disapears after we make another call.
+  - so technically the try and catch blocks are not conditionals.
+
+  -CREATING A CUSTOM HOOK
+  - custom hooks are freer meaning that you can input any varibles and return anything you want.
+  - ya its literally just a fucntion that has to start with use.
+
+
+  RENDERING COMPONENTS FROM THE RETRIEVED DATA
+  -we use the javascript map function. the map method creates a new array populated with the results of calling a provided
+  function on every element in the array.
+
+  - so I ran into a problem an I think it has something to do with my lack of understanding of how component
+  render in react.
+  - every component follows a cycle from when it's created and mounted on the DOM to when it is unmounted and
+  destroyed, this is the component lifecycle
+  the lifecycle is categorized into three parts: MOUNTING, UPDATING AND UNMOUNTING
+  - HOOKS get called automatically at each point in the lifecycle.
+  - when our component mounts it is inserted into the DOM, render will be called during this time 
 
 
 - so I think we want a forEach method to loop through it all
